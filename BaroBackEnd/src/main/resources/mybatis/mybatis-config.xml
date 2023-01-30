@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias type="com.ta9.demo.dto.Notice" alias="notice"/>
+<!-- 		<typeAlias type="com.ta9.baro.baroDto.MEmber" alias="member"/>
+		<typeAlias type="com.ta9.baro.baroDto.Qna" alias="qna"/>
+		<typeAlias type="com.ta9.baro.baroDto.Transport" alias="transport"/> -->
+	</typeAliases>
+  <mappers>
+    <!-- <mapper resource="TestMapper.xml"/>
+    <mapper resource="member.xml"/>
+    <mapper resource="qna.xml"/>
+    <mapper resource="transport.xml"/> -->
+    <mapper resource="notice.xml"/>
+  </mappers>
+</configuration>
