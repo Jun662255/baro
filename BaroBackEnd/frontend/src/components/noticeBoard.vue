@@ -1,63 +1,114 @@
 <template>
     <div class="boardWrap">
         <h2>&nbsp;&nbsp;공지 게시판</h2><hr>
+        <div style="float:right">
+          <input type="text" id="serch" v-model="serchValue" placeholder="제목으로 검색하세요" @keyup.enter="getnoticeList(1, this.serchValue)">
+          <button @click="getnoticeList(1, this.serchValue)" class="btn btn-dark">검색</button>
+        </div>
+        <br>
         <br>
         <div class="contentWrap">
+        <div style="width:1200px; height:448px;">
             <table class="table">
                 <thead>
                     <tr>
                         <th style="width: 10%;">번호</th>
-                        <th>제목</th>
-                        <th style="width: 20%;">작성자</th>
-                        <th style="width: 20%;">작성일</th>
+                        <th style="width: 60%;">제목</th>
+                        <th style="width: 10%;">작성자</th>
+                        <th style="width: 10%;">작성일</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>제목</td>
-                        <td>admin</td>
-                        <td>22.22.22</td>
+                <tbody v-if="this.pi.listCount !== 0">
+                    <tr v-for="noticelist in noticeList" v-bind:key="noticelist.NOTICE_NO" @click="detail(noticelist.NOTICE_NO)" >
+                        <td>{{noticelist.NOTICE_NO}}</td>
+                        <td class="leftAlign">{{noticelist.NOTICE_TITLE}}</td>
+                        <td>{{noticelist.NOTICE_WRITER}}</td>
+                        <td>{{noticelist.NOTICE_DATE}}</td>
                     </tr>
                 </tbody>
+                <tbody v-else>
+                  <tr>
+                    <td colspan="4">게시물이 존재하지 않습니다.</td>
+                  </tr>
+                </tbody>
             </table>
-            <div class="pageWrap">
-                <button class="btn btn-dark paging">&lt;</button>
-                <button class="btn btn-dark paging">1</button>
-                <button class="btn btn-dark paging">&gt;</button>
-            </div>
+            </div><br>
+          <div class="pageWrap" v-if="this.pi.listCount != 0">
+              <div v-if="this.pi.currentPage != 1">
+                <button class="btn btn-dark paging" @click="previousPage()">&lt;</button>
+              </div>
+              <div id="pagingDiv" v-for="(item, pageLimit) in range(this.pi.startPage, this.pi.endPage)" :key="pageLimit">
+                <button class="btn btn-dark paging" @click="getnoticeList(item, this.serchValue)">{{item}}</button>
+              </div>
+              <div v-if="this.pi.currentPage != this.pi.maxPage " @click="nextPage()">
+                <button class="btn btn-dark paging" >&gt;</button>
+              </div>
+          </div>
         </div>
-        <button @click="test1()" style="white:200px; height:200px;">test11</button>
-        <button @click="test2()" style="white:200px; height:200px;">test22</button>
     </div>
 
 </template>
 
 <script>
-import axios from 'axios'
-
+import router from '../router'
 export default {
   data () {
     return {
-      contents: null
+      noticeList: null,
+      pi: {
+        currentPage: 1,
+        endPage: 0,
+        maxPage: 0,
+        pageLimit: 0,
+        startPage: 0
+      },
+      serchValue: null
     }
   },
   mounted () {
+    this.axios.get('api/noticeList?cPage=' + this.pi.currentPage).then(res => {
+      this.noticeList = res.data.list
+      this.pi = res.data.pi
+      console.log(res.data.list)
+    }).catch(err => {
+      console.log(err)
+    })
   },
   methods: {
-    test2 () {
-      axios.get('api/noticeCount').then(res => {
-        console.log(res.data)
+    detail (nno) {
+      this.axios.get('api/noticeDetail?nno=' + nno).then(res => {
+        this.$store.state.noticeDetail = res.data
+        router.push('/noticeDetail')
       }).catch(err => {
         console.log(err)
       })
     },
-    test1 () {
-      axios.get('api/noticeList').then(res => {
-        console.log(res.data)
-      }).catch(err => {
-        console.log(err)
-      })
+    previousPage () {
+      this.pi.currentPage = this.pi.currentPage - 1
+      this.getnoticeList(this.pi.currentPage)
+    },
+    nextPage () {
+      this.pi.currentPage = this.pi.currentPage + 1
+      this.getnoticeList(this.pi.currentPage)
+    },
+    getnoticeList (cPage, serch) {
+      console.log(cPage)
+      console.log(serch)
+      if (serch === undefined) {
+        serch = null
+      }
+      console.log(cPage + serch)
+      this.axios.get('api/noticeList?cPage=' + cPage + '&serch=' + serch)
+        .then(res => {
+          this.noticeList = res.data.list
+          this.pi = res.data.pi
+          this.serch = null
+        }).catch(err => {
+          console.log(err)
+        })
+    },
+    range: function (start, end) {
+      return Array(end - start + 1).fill().map((_, idx) => start + idx)
     }
   }
 }
@@ -67,7 +118,6 @@ export default {
     table{
         text-align: center;
         width: 100%;
-
     }
     .boardWrap{
         width: 1200px;
@@ -80,15 +130,8 @@ export default {
     .pageWrap{
         margin: auto;
         margin-top:30px;
+        display: flex;
+        flex-direction: row;
     }
-    .crateWrap{
-        width: 80px;
-        height: 30px;
-        margin-left: 90%;
 
-    }
-    .crateWrap button{
-        width: 100%;
-        height: 100%;
-    }
 </style>

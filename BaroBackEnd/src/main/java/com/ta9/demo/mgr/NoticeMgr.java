@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ta9.demo.common.PageInfo;
 import com.ta9.demo.dao.NoticeDao;
 import com.ta9.demo.dto.Notice;
 
@@ -16,12 +17,19 @@ public class NoticeMgr {
 	@Autowired SqlSessionTemplate sql;
 
 
-	public List<Notice> getNoticeList() throws IOException{
-		return noticeDao.getNoticeList(sql);
+	public List<Notice> getNoticeList(PageInfo pi,String serch) throws IOException{
+		return noticeDao.getNoticeList(sql,pi,serch);
 	}
 
-	public int getNoticeCount()  throws IOException{
+	public int getNoticeCount(String serch)  throws IOException{
+		return noticeDao.getNoticeCount(sql,serch);
+	}
 
-		return noticeDao.getNoticeCount(sql);
+	public List<Notice> getMainNoticeList() {
+		return noticeDao.getMainNoticeList(sql);
+	}
+
+	public List<Notice> getNoticeDetail(String nno) {
+		return  noticeDao.getNoticeDetail(sql, nno);
 	}
 }

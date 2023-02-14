@@ -7,20 +7,19 @@
               <table class="table qnatable">
                   <tr>
                       <th style="width: 15%; background:rgb(230, 230, 230);" >제목</th>
-                      <td><input type="text" class="qnaCrateInput" v-model="qnaTitle" name="qna_title" required  maxlength="50"></td>
-                  </tr>
-                  <tr>
-                      <th style="width: 15%; background:rgb(230, 230, 230);" >이미지 업로드</th>
-                      <td><input multiple type="file" class="qnaCrateInput" id="qnaUpFile" @change="chengeFile"  accept="image/gif, image/jpeg, image/png" name="upfile"/></td>
+                      <td><input type="text" class="qnaCrateInput" name="qna_title" required v-model="this.$store.state.qnaDetail[0].QNA_TITLE"></td>
                   </tr>
                   <tr>
                       <th style="width: 15%; background:rgb(230, 230, 230);" >내용</th>
-                      <td><textarea name="qna_content" id="" cols="30" rows="10" maxlength="500" class="qnaCrateInput qnaCreateTextarea" v-model="qnaContent" required></textarea></td>
+                      <td>
+                        <img src="" alt="">
+                        <textarea name="qna_content" id="" cols="30" rows="10" maxlength="500" class="qnaCrateInput qnaCreateTextarea" v-model="this.$store.state.qnaDetail[0].QNA_CONTENT" required></textarea>
+                      </td>
                   </tr>
               </table>
         </div>
         <br>
-        <button class="createBtn btn btn-dark" @click="insertQna()" type="button">작성</button>
+        <button class="createBtn btn btn-dark" @click="updateQna()" type="button">작성</button>
         </form>
     </div>
 </template>
@@ -28,14 +27,10 @@
 <script>
 import router from '../router'
 import axios from 'axios'
-// import axios from 'axios'
 export default {
   data () {
     return {
-      qnaTitle: null,
-      qnaContent: null,
-      uplodeFile: null,
-      user_no: localStorage.getItem('user_no')
+
     }
   },
   mounted () {
@@ -45,33 +40,25 @@ export default {
     }
   },
   methods: {
-    insertQna () {
-      const fd = new FormData(document.getElementById('form'))
-      fd.append('upfile', this.upfile)
-      console.log(fd.get('upfile'))
-      console.log(this.qnaTitle)
-      if (this.qnaTitle == null || this.qnaTitle === '') {
+    updateQna () {
+      if (this.$store.state.qnaDetail[0].QNA_TITLE == null || this.$store.state.qnaDetail[0].QNA_TITLE === '') {
         alert('제목을 작성해주세요')
-      } else if (this.qnaContent === null || this.qnaContent === '') {
+      } else if (this.$store.state.qnaDetail[0].QNA_CONTENT === null || this.$store.state.qnaDetail[0].QNA_CONTENT === '') {
         alert('내용을 작성해주세요')
       } else {
-        axios.post('api/insertQna', fd).then(res => {
+        axios.post('api/updateQna').then(res => {
           console.log(res.data)
           if (res.data === 0) {
             alert('일시적인 오류입니다 다시 시도해주세요')
-            router.push('/qnaCreate')
+            router.push('/qnaUpdate')
           } else {
-            alert('작성 성공!')
+            alert('수정 성공!')
             router.push('/qna')
           }
         }).catch(err => {
           console.log(err)
         })
       }
-    },
-    chengeFile (e) {
-      this.uplodeFile = e.target.files[0]
-      console.log(e.target.files)
     }
   }
 }
@@ -109,6 +96,7 @@ export default {
     .qnatable {
         border: black;
         margin-bottom: 0;
+
     }
     .boardCreateWrap{
         border: 1px solid black;

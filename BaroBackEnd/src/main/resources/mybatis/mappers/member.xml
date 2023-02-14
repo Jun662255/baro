@@ -4,7 +4,47 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="member">
-
+ <select id="getduplicateCheck" parameterType="com.ta9.demo.dto.Member" resultType="int">
+    SELECT COUNT(USER_ID) 
+      FROM MEMBER
+     WHERE USER_ID = #{user_id}
+ </select>
+  <insert id="singUp" parameterType="com.ta9.demo.dto.Member">
+  	INSERT
+  	  INTO MEMBER
+  	       (USER_ID
+  	       , USER_PWD
+  	       , USER_NAME
+  	       , PHONE)
+    VALUES (#{user_id}
+    	   , #{user_pwd}
+    	   , #{user_name}
+    	   , #{phone});
+  </insert>
+  <select id="login" resultType="hashmap">
+    SELECT USER_NO
+           , USER_NAME
+           , PHONE
+           , USER_ID
+      FROM MEMBER     
+     WHERE 
+           USER_ID = #{user_id}
+       AND   
+           USER_PWD = #{user_pwd}	
+  </select>
+  <update id="infoChange" parameterType="com.ta9.demo.dto.Member">
+  	UPDATE MEMBER
+  	   SET 
+  	      <if test="new_pwd != null ">
+  	      USER_PWD = #{new_pwd},
+  	      </if>
+  	      <if test="phone != null">
+  	      PHONE = #{phone}
+  	      </if>
+  	WHERE 
+  	      USER_NO = #{user_no}
+  	  AND 
+  	      USER_PWD = #{user_pwd}            
+  </update>
   
-
 </mapper>

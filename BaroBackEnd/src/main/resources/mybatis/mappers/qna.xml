@@ -4,6 +4,71 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="qna">
-
-
+	<select id="getQnaList" resultType="hashmap">
+		SELECT QNA_NO as 'QNA_NO'
+		     , QNA_TITLE
+		     , QNA_CONTENT
+		     , DATE_FORMAT(QNA_DATE , '%Y.%m.%d') AS 'QNA_DATE'
+			 , USER_ID
+			 , COMMENT
+			 , CHECK_COMMENT
+		  FROM QNA Q JOIN MEMBER M USING(USER_NO) 
+		   <if test='serch != null and !serch.equals("") and !serch.equals("null")' >
+		 WHERE QNA_TITLE
+		   LIKE CONCAT('%', #{serch}, '%') 
+		  </if>
+	     ORDER BY QNA_NO DESC
+	</select>
+		<select id="getMainQnaList" resultType="hashmap">
+		SELECT QNA_NO as 'QNA_NO'
+		     , QNA_TITLE
+		     , QNA_CONTENT
+		     , DATE_FORMAT(QNA_DATE , '%Y.%m.%d') AS 'QNA_DATE'
+			 , USER_ID
+		  FROM QNA Q JOIN MEMBER M USING(USER_NO) 
+	     ORDER BY QNA_NO DESC
+	     LIMIT 3
+	</select>
+	<insert id="insertQna" parameterType="com.ta9.demo.dto.Qna">
+	INSERT INTO
+		   QNA
+	       ( QNA_TITLE
+	       , QNA_CONTENT
+	       , O_FILE_NAME
+	       , C_FILE_NAME
+	       , USER_NO
+	       )
+	VALUES ( #{qna_title}
+    	   , #{qna_content}
+    	   , #{o_file_name}
+    	   , #{c_file_name}
+    	   , #{user_no}
+    	   )    
+	</insert>
+	<select id="getQnaCount" resultType="_int" parameterType="string">
+		SELECT COUNT(QNA_NO)
+		  FROM QNA
+	   <if test='serch != null and !serch.equals("") and !serch.equals("null")' >
+		WHERE QNA_TITLE 
+         LIKE CONCAT('%', #{serch}, '%') 		  
+	  </if>
+	</select>
+	<select id="getQnaDetail" resultType="hashmap" parameterType="string">
+		SELECT QNA_NO
+			   , QNA_TITLE
+		       , USER_ID
+		       , QNA_CONTENT
+		       , DATE_FORMAT(QNA_DATE , '%Y.%m.%d') AS 'QNA_DATE'
+		       , QNA_CONTENT
+		       , O_FILE_NAME
+		       , C_FILE_NAME
+		       , COMMENT
+		  FROM QNA JOIN MEMBER USING(USER_NO)   
+		 WHERE QNA_NO = #{qno}      
+	</select>
+	<delete id="qnaDelete" parameterType="_int">
+		DELETE  
+		  FROM QNA
+		 WHERE QNA_NO = #{qno}
+	</delete>
 </mapper>

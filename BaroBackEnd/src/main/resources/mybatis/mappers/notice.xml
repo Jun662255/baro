@@ -5,16 +5,44 @@
 
 <mapper namespace="notice">
 
-  <select id="getNoticeList" resultType="hashmap">
+  <select id="getNoticeList" resultType="hashmap" parameterType="string">
    SELECT NOTICE_NO 
           , NOTICE_TITLE 
-          , DATE_FORMAT(NOTICE_DATE , '%Y.%m.%d %H:%i') AS 'NOTICE_DATE' 
+          , DATE_FORMAT(NOTICE_DATE , '%Y.%m.%d') AS 'NOTICE_DATE' 
           , NOTICE_WRITER 
      FROM NOTICE
+      <if test='serch != null and !serch.equals("") and !serch.equals("null")' >
+    WHERE NOTICE_TITLE 
+     LIKE CONCAT('%', #{serch}, '%') 
+      </if>
+    ORDER BY NOTICE_NO DESC
   </select>
-  <select id="getNoticeCount" resultType="_int">
-  SELECT COUNT(NOTICE_NO)
+  
+  
+  <select id="getNoticeCount" resultType="_int" parameterType="string">
+   SELECT COUNT(NOTICE_NO)
     FROM NOTICE
+    <if test='serch != null and !serch.equals("") and !serch.equals("null")' >
+   WHERE NOTICE_TITLE 
+    LIKE CONCAT('%', #{serch}, '%') 
+   	</if>
+  </select>
+  <select id="getMainNoticeList" resultType="hashmap">
+   SELECT NOTICE_NO 
+          , NOTICE_TITLE 
+          , DATE_FORMAT(NOTICE_DATE , '%Y.%m.%d') AS 'NOTICE_DATE' 
+          , NOTICE_WRITER 
+     FROM NOTICE
+    ORDER BY NOTICE_NO DESC
+    LIMIT 3
+  </select>
+  <select id="getNoticeDetail" resultType="hashmap" parameterType="string">
+   SELECT NOTICE_TITLE
+          , NOTICE_WRITER
+          , NOTICE_CONTENT
+          , DATE_FORMAT(NOTICE_DATE , '%Y.%m.%d') AS 'NOTICE_DATE'
+     FROM NOTICE
+    WHERE NOTICE_NO = #{nno} 
   </select>
   
   

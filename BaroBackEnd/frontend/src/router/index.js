@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+// import HomeView from '../views/HomeView.vue'
 import main from '@/components/main'
 import login from '@/components/login'
 import transport from '@/components/transport'
@@ -11,20 +11,12 @@ import noticeDetail from '@/components/noticeDetail'
 import SingUp from '@/components/SingUp'
 import seccess from '@/components/seccess'
 import mypage from '@/components/mypage'
-
+import qnaUpdate from '@/components/qnaUpdate'
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: HomeView
-  },
-  {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+    name: 'main1',
+    component: main
   },
   {
     path: '/main',
@@ -73,7 +65,7 @@ const routes = [
     component: SingUp
   },
   {
-    path: '/seccess',
+    path: '/success',
     name: 'seccess',
     component: seccess
   },
@@ -81,7 +73,13 @@ const routes = [
     path: '/mypage',
     name: 'mypage',
     component: mypage
+  },
+  {
+    path: '/qnaUpdate',
+    name: 'qnaUpdate',
+    component: qnaUpdate
   }
+
 ]
 
 const router = createRouter({

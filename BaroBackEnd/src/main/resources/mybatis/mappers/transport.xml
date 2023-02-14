@@ -4,7 +4,52 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="tranport">
-
- 
-
+	<insert id="setTransport" parameterType="com.ta9.demo.dto.Transport">
+		insert 
+		  into transport
+		       (USER_NO
+		       , DEPARTURE
+		       , RECIPIENT
+		       , DESTINATION
+		       , TRANSPORT_DATE
+		       , STATUS
+		       , PRICE
+		       )
+		VALUES (#{user_no}
+			   , #{departure}
+			   , #{recipient}
+		       , #{destination}
+		       , now()
+		       , 1
+		       , #{price}
+		)		       
+	</insert>
+  <select id="myTransport" resultType="hashmap" parameterType="com.ta9.demo.dto.Transport">
+    SELECT TRANSPORT_NO
+	       , USER_NAME
+	       , DEPARTURE 
+	       , PRICE
+	       , RECIPIENT
+	       , DESTINATION
+	       , DATE_FORMAT(TRANSPORT_DATE , '%Y.%m.%d %H:%i') AS 'TRANSPORT_DATE'
+	       , STATUS as '_STATUS'
+	       , CD_NM
+	  FROM TRANSPORT T 
+	  JOIN `MEMBER` M USING(USER_NO)
+	  JOIN TCMN_CD_DTL TCD ON T.STATUS = TCD.CD  
+	 WHERE USER_NO = #{user_no}
+	 ORDER BY  T.TRANSPORT_NO DESC
+  </select>
+  <select id="price" resultType="string" parameterType="com.ta9.demo.dto.Transport">
+  	SELECT PRICE
+  	  FROM TRANSPORT T 
+  	 WHERE USER_NO = #{user_no}
+  	 LIMIT 1
+  </select>
+  <select id="getmyTransportCount" resultType="_int" parameterType="com.ta9.demo.dto.Transport">
+  	SELECT COUNT(TRANSPORT_NO)
+    FROM TRANSPORT
+   WHERE USER_NO = #{user_no}
+  </select>
+     
 </mapper>

@@ -2,30 +2,30 @@
     <div class="wrap">
         <h2>공지 상세</h2><hr><br>
         <div class="boardDetailWrap">
-            <h2> 제목</h2>
+            <h2>{{$store.state.noticeDetail[0].NOTICE_TITLE}}</h2>
             <div class="boardInfo">
-                작성자 &nbsp;/&nbsp;2022.22.22
+                {{$store.state.noticeDetail[0].NOTICE_WRITER}} &nbsp;/&nbsp;{{$store.state.noticeDetail[0].NOTICE_DATE}}
             </div>
             <hr>
-            <div class="fileDown">
-                <a href=""> 올라간파일</a>
-            </div>
-            <div class="createDate">
-            </div><br>
+            <br>
             <div class="boardDetilContent">
-                컨텐츠
+                {{$store.state.noticeDetail[0].NOTICE_CONTENT}}
             </div>
             <div class="asd">
-            <button class="btnBackDiv"> 뒤로가기</button>
+            <button class="btnBackDiv" @click="noticeList()"> 공지목록</button>
             </div>
         </div>
-
     </div>
 </template>
 
 <script>
+import router from '../router'
 export default {
-
+  methods: {
+    noticeList () {
+      router.push('/notice')
+    }
+  }
 }
 </script>
 
