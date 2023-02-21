@@ -22,36 +22,36 @@ import com.ta9.demo.mgr.TransportMgr;
 @RestController
 @RequestMapping("/api")
 public class TransportController {
-	
+
 	@Autowired
 	TransportMgr transportMgr;
+
 	@PostMapping("/setTransport")
 	public int setTransport(@RequestBody Transport t) {
-		
-		String add1 = t.getAdd1();
-		String add2 = t.getAdd2();
-		String add3 = t.getAdd3();
-		String add4 = t.getAdd4();
-		String add5 = t.getAdd5();
-		String add6 = t.getAdd6();
-		t.setDeparture(add1+"/"+add2+"/"+add3);
-		t.setDestination(add4+"/"+add5+"/"+add6);
-		System.out.println(t);
-		int result =transportMgr.setTransport(t); 
+		t.setDeparture(t.getAdd1() + "/" + t.getAdd2() + "/" + t.getAdd3()); // 한 컬럼에 담기 위함
+		t.setDestination(t.getAdd4() + "/" + t.getAdd5() + "/" + t.getAdd6());
+		int result = transportMgr.setTransport(t);
 		return result;
 	}
+
 	@PostMapping("/myTransport")
-	public Map<String, Object> myTransport(@RequestBody Transport n,@RequestParam("cPage") int currentPage){
+	public Map<String, Object> myTransport(@RequestBody Transport n, @RequestParam("cPage") int currentPage) {
 		PageInfo pi = Pagination.getPageInfo(transportMgr.getmyTransportCount(n), currentPage, 5, 10);
-		List<Transport> list = transportMgr.myTransport(n,pi);
+		List<Transport> list = transportMgr.myTransport(n, pi);
 		Map<String, Object> rtnMap = new HashMap<>();
 		rtnMap.put("pi", pi);
 		rtnMap.put("list", list);
 		return rtnMap;
 	}
-	@PostMapping("/price")
-	public  String price(@RequestBody Transport n){
-		String price = transportMgr.price(n);
+
+	@PostMapping("/successPrice")
+	public String successPrice(@RequestBody Transport n) {
+		String price = transportMgr.successPrice(n);
 		return price;
+	}
+	@GetMapping("/getPrice")
+	public List<Transport> getPrice() {
+		List<Transport> list = transportMgr.getPrice();
+		return list;
 	}
 }

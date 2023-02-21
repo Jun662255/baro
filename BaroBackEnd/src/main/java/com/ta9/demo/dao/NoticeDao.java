@@ -1,6 +1,5 @@
 package com.ta9.demo.dao;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.apache.ibatis.session.RowBounds;
@@ -14,7 +13,7 @@ import com.ta9.demo.dto.Notice;
 public class NoticeDao {
 	
 
-	public List<Notice> getNoticeList(SqlSessionTemplate sql, PageInfo pi, String serch) throws IOException{ 
+	public List<Notice> getNoticeList(SqlSessionTemplate sql, PageInfo pi, String serch) {
 		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
 		int limit = pi.getBoardLimit();
 		RowBounds rowBounds = new RowBounds(offset, limit);
@@ -22,7 +21,7 @@ public class NoticeDao {
 		return sql.selectList("notice.getNoticeList",serch,rowBounds);
 	}
 
-	public int getNoticeCount(SqlSessionTemplate sql, String  serch) throws IOException{
+	public int getNoticeCount(SqlSessionTemplate sql, String  serch) {
 		
 		return sql.selectOne("notice.getNoticeCount",serch);
 	}

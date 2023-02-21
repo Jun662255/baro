@@ -1,6 +1,6 @@
 <template>
   <div class="mainWrap">
-  <br>  <br>  <br>  <br>  <br>
+  <br><br><br><br><br>
     <div id="loginWrap">
       <p style="fontSize:30px;" class="formName">로그인</p>
       <div>
@@ -27,7 +27,7 @@
 
 <script>
 import axios from 'axios'
-// import router from '../router'
+import router from '../router'
 export default {
   name: 'App',
   data () {
@@ -35,9 +35,6 @@ export default {
       id: null,
       pwd: null,
       USER_NO: null
-      // ,
-      // phone: null,
-      // user_name: null
     }
   },
   components: {
@@ -57,16 +54,10 @@ export default {
             user_pwd: this.pwd
           }
         }).then(data => {
-          console.log([0].USER_ID)
           if (data.data.length !== 0) {
-            console.log(data.data)
-            localStorage.setItem('user_no', data.data[0].USER_NO)
-            localStorage.setItem('phone', data.data[0].PHONE)
-            localStorage.setItem('user_name', data.data[0].USER_NAME)
-            localStorage.setItem('user_id', data.data[0].USER_ID)
-            localStorage.setItem('loginCheck', 'Y')
-            // this.$store.state.loginCheck = 'Y'
-            location.replace('/main')
+            this.$store.commit('setUserInfo', data.data)
+            this.$store.commit('setLoginCheck', 'Y')
+            router.push('/main')
           } else {
             alert('올바르지않은 아이디, 비밀번호입니다')
           }

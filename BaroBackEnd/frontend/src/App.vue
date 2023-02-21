@@ -54,10 +54,6 @@ a {
   font-size: 30px;
   text-align: center;
 }
-.paging{
-  margin-left: 3px;
-  margin-right: 3px;
-}
 .contentWrap tbody tr:hover{
 background-color:rgba(0, 0, 0, 0.1);
 cursor: pointer;
@@ -84,5 +80,12 @@ cursor: pointer;
   border: none;
   border-bottom: 2px solid black;
   margin-right: 10px;
+}
+.curPage{
+  background: gray;
+}
+.btnPaging{
+  margin-left: 1px;
+  margin-right: 1px;
 }
 </style>

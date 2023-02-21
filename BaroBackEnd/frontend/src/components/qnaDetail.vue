@@ -12,7 +12,8 @@
             </div>
             <hr>
             <div class="fileDown"  v-if="fileName != null ">
-                <img :src="require(`../../../../../../aaa/${fileName}`)" id="qnaImg"/>
+                <img :src="imageSrc" id="qnaImg"/>
+                <!-- <img :src="require(`../../../../../../aaa/${fileName}`)" id="qnaImg"/> -->
             </div>
             <div v-else>
             </div>
@@ -26,8 +27,8 @@
             </div>
         </div>
         <br><br>
+        <h3 v-if="$store.state.qnaDetail[0].COMMENT != null">답변</h3>
         <div class="commentDiv" v-if="$store.state.qnaDetail[0].COMMENT != null">
-            답변 <br>
             {{$store.state.qnaDetail[0].COMMENT}}
         </div>
     </div>
@@ -40,20 +41,24 @@ export default {
   data () {
     return {
       fileImg: '../../../../../../aaa/',
-      userID: localStorage.getItem('user_id'),
-      test: '../../../../../../aaa/20230209130156_1_pepe.jpg',
+      userID: this.$store.state.userInfo[0].USER_ID,
       fileName: this.$store.state.qnaDetail[0].C_FILE_NAME
     }
   },
+  computed: {
+    imageSrc () {
+      try {
+        return require(`../../../../../../aaa/${this.fileName}`)
+      } catch (error) {
+        // 이미지 파일이 없는 경우 처리
+        console.log(error)
+        return require('../../../../../../aaa/noImg.png')
+      }
+    }
+  },
   mounted () {
-    // console.log(this.fileName + '"asdasasdasdd"')
-    console.log(this.fileName + '"asdasasdasdd"')
-    console.log('asdasasdasdd')
-    console.log('asdasasdasdd')
-    console.log('asdasasdasdd')
-    console.log('asdasasdasdd')
     this.fileImg = this.fileImg + this.$store.state.qnaDetail[0].C_FILE_NAME
-    if (this.$store.state.loginCheck == null) {
+    if (this.$store.state.loginCheck === 'N') {
       alert('로그인후 이용 바랍니다')
       router.push('/login')
     }
@@ -67,11 +72,13 @@ export default {
     },
     qnaDelete () {
       const qno = this.$store.state.qnaDetail[0].QNA_NO
+      console.log(this.fileName)
       axios({
         method: 'get',
-        url: 'api/qnaDelete?qno=' + qno
+        url: 'api/qnaDelete?qno=' + qno + '&c_file_name=' + this.fileName
       }).then(data => {
         if (data.data === 1) {
+          alert('삭제성공')
           router.push('/qna')
         } else {
           alert('일시적인 오류입니다 다시 시도해주세요')
@@ -105,6 +112,8 @@ export default {
     .boardDetilContent{
         min-height: 400px;
         padding: 5px;
+        word-wrap: break-word;
+        white-space: pre-line;
     }
     .boardInfo{
         width: 200px;

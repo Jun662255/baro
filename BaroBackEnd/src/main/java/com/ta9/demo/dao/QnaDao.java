@@ -36,9 +36,22 @@ public class QnaDao {
 	}
 
 	public int qnaDelete(SqlSessionTemplate sql, int qno) {
-		int i = sql.delete("qna.qnaDelete", qno);
-		System.out.println(i);
-		return i;
+		return sql.delete("qna.qnaDelete", qno);
+	}
+
+	public int updateQna(SqlSessionTemplate sql, Qna q) {
+		return sql.update("qna.updateQna", q);
+	}
+
+	public int myQnaListCount(SqlSessionTemplate sql, Qna q) {
+		return sql.selectOne("qna.myQnaListCount",q);
+	}
+
+	public List<Qna> myQnaList(SqlSessionTemplate sql, Qna q, PageInfo pi) {
+		int offset = (pi.getCurrentPage() - 1) * pi.getBoardLimit();
+		int limit = pi.getBoardLimit();
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		return sql.selectList("qna.myQnaList",q,rowBounds);
 	}
 
 }

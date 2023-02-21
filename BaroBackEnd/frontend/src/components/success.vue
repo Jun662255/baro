@@ -4,7 +4,7 @@
   <br>
   <br>
   <br>
-    <div id="seccessWrap">
+    <div id="successWrap">
     <br><br>
       <h1>감사합니다 :)</h1>
         <br><br><br>
@@ -31,9 +31,9 @@ export default {
   mounted () {
     axios({
       method: 'Post',
-      url: 'api/price',
+      url: 'api/successPrice',
       data: {
-        user_no: localStorage.getItem('user_no')
+        user_no: this.$store.state.userInfo[0].USER_NO
       }
     }).then(data => {
       this.price = data.data
@@ -45,7 +45,7 @@ export default {
 </script>
 
 <style>
-#seccessWrap{
+#successWrap{
   border: 1px solid black;
   width: 1000px;
   height: 600px;

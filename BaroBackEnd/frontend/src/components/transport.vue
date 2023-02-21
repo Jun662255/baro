@@ -4,7 +4,7 @@
     <div id="transportForm"><br>
       <h3 style="text-align:center"> 배송 정보</h3><br>
       <div class="transportFormDetail">
-        <form action="/success">
+        <form>
           <div>
             회원명 :
             <input type="text" class="tInput" required v-model="userName" readonly><br>
@@ -33,18 +33,19 @@
           </div>
           <div>
             운임 가격 :
-            <select name="" id="price" class="tSelect" v-model="price" required>
-              <option value="10000">1kg이하 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;10,000원</option>
-              <option value="12000">1kg이상 2kg이하 &emsp;&emsp;&emsp;&emsp;12,000원</option>
-              <option value="13000">2kg이상 3kg이하 &emsp;&emsp;&emsp;&emsp;13,000원</option>
-              <option value="14000">3kg이상 4kg이하 &emsp;&emsp;&emsp;&emsp;14,000원</option>
-              <option value="15000">4kg이상 5kg이하 &emsp;&emsp;&emsp;&emsp;15,000원</option>
+            <select name="" id="price" class="tSelect" v-model="this.price" required>
+              <option :value="null">가격을 선택해주세요</option>
+              <option :value="this.tcmn_cd_dtl.price1.cd_nm">{{tcmn_cd_dtl.price1.ref_1}}&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;{{comma.priceComma1}}</option>
+              <option :value="this.tcmn_cd_dtl.price2.cd_nm">{{tcmn_cd_dtl.price2.ref_1}}&emsp;&emsp;&emsp;&emsp;{{comma.priceComma2}}</option>
+              <option :value="this.tcmn_cd_dtl.price3.cd_nm">{{tcmn_cd_dtl.price3.ref_1}}&emsp;&emsp;&emsp;&emsp;{{comma.priceComma3}}</option>
+              <option :value="this.tcmn_cd_dtl.price4.cd_nm">{{tcmn_cd_dtl.price4.ref_1}}&emsp;&emsp;&emsp;&emsp;{{comma.priceComma4}}</option>
+              <option :value="this.tcmn_cd_dtl.price5.cd_nm">{{tcmn_cd_dtl.price5.ref_1}}&emsp;&emsp;&emsp;&emsp;{{comma.priceComma5}}</option>
             </select>
             <br>
           </div>
           <div>
             <br>
-            <button class="tSubmit btn btn-dark" type="submit" @click="setTransport()">배송신청</button>
+            <button class="tSubmit btn btn-dark" type="button" @click="setTransport()">배송신청</button>
           </div>
         </form>
       </div>
@@ -60,37 +61,94 @@ export default {
   name: 'App',
   data () {
     return {
-      userName: localStorage.getItem('user_name'),
-      phone: localStorage.getItem('phone'),
+      userName: this.$store.state.userInfo[0].USER_NAME,
+      phone: this.$store.state.userInfo[0].PHONE,
       user_no: null,
-      add1: this.add1,
-      add2: this.add2,
-      add3: this.add3,
-      name: this.name,
-      add4: this.add4,
-      add5: this.add5,
-      add6: this.add6,
-      price: '10000'
+      add1: '',
+      add2: '',
+      add3: '',
+      name: '',
+      add4: '',
+      add5: '',
+      add6: '',
+      tcmn_cd_dtl: {
+        price1: {
+          cd_nm: null,
+          ref_1: null
+        },
+        price2: {
+          cd_nm: null,
+          ref_1: null
+        },
+        price3: {
+          cd_nm: null,
+          ref_1: null
+        },
+        price4: {
+          cd_nm: null,
+          ref_1: null
+        },
+        price5: {
+          cd_nm: null,
+          ref_1: null
+        }
+      },
+      price: null,
+      comma: {
+        priceComma1: null,
+        priceComma2: null,
+        priceComma3: null,
+        priceComma4: null,
+        priceComma5: null
+      }
     }
   },
   components: {
   },
   mounted () {
-    if (this.$store.state.loginCheck == null) {
-      alert('로그인후 이용 바랍니다')
-      router.push('/login')
-    }
+    this.axios.get('api/getPrice').then(res => {
+      this.tcmn_cd_dtl.price1.cd_nm = res.data[0].CD_NM
+      this.tcmn_cd_dtl.price2.cd_nm = res.data[1].CD_NM
+      this.tcmn_cd_dtl.price3.cd_nm = res.data[2].CD_NM
+      this.tcmn_cd_dtl.price4.cd_nm = res.data[3].CD_NM
+      this.tcmn_cd_dtl.price5.cd_nm = res.data[4].CD_NM
+      this.tcmn_cd_dtl.price1.ref_1 = res.data[0].REF_1
+      this.tcmn_cd_dtl.price2.ref_1 = res.data[1].REF_1
+      this.tcmn_cd_dtl.price3.ref_1 = res.data[2].REF_1
+      this.tcmn_cd_dtl.price4.ref_1 = res.data[3].REF_1
+      this.tcmn_cd_dtl.price5.ref_1 = res.data[4].REF_1
+      this.comma.priceComma1 = this.priceComma(this.tcmn_cd_dtl.price1.cd_nm)
+      this.comma.priceComma2 = this.priceComma(this.tcmn_cd_dtl.price2.cd_nm)
+      this.comma.priceComma3 = this.priceComma(this.tcmn_cd_dtl.price3.cd_nm)
+      this.comma.priceComma4 = this.priceComma(this.tcmn_cd_dtl.price4.cd_nm)
+      this.comma.priceComma5 = this.priceComma(this.tcmn_cd_dtl.price5.cd_nm)
+    }).catch(err => {
+      console.log(err)
+    })
   },
   methods: {
-    // if(add1 != null && add2 != null && add3 != null && name != null && add4 != null && add5 != null && add6 != null) {
-
+    priceComma (val) {
+      return String(val).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'
+    },
     setTransport () {
-      if (this.add1 != null && this.add2 != null && this.add3 != null && this.name != null && this.add4 != null && this.add5 != null && this.add6 != null) {
+      if (this.add1 === '' && this.add2 === '') {
+        alert('보내시는 주소를 입력해 주세요')
+      } else if (this.add3 === '') {
+        alert('상세주소를 입력해 주세요')
+      } else if (this.name === '') {
+        alert('받으시는 분 이름을 입력해 주세요')
+      } else if (this.add4 === '' && this.add5 === '') {
+        alert('받으시는 주소를 입력해 주세요')
+      } else if (this.add6 === '') {
+        alert('상세주소를 입력해 주세요')
+      } else if (this.price == null) {
+        alert('가격을 선택해 주세요')
+      } else {
         axios({
           method: 'post',
           url: '/api/setTransport',
           data: {
-            user_no: localStorage.getItem('user_no'),
+            user_no: this.$store.state.userInfo[0].USER_NO,
             add1: this.add1,
             add2: this.add2,
             add3: this.add3,
@@ -101,8 +159,7 @@ export default {
             price: this.price
           }
         }).then(data => {
-          console.log(data)
-          // location.replace('/success')
+          router.push('/success')
         }).catch(err => {
           console.log(err)
         })

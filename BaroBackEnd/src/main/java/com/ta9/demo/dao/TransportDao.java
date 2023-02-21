@@ -22,10 +22,13 @@ public class TransportDao {
 		
 		return sql.selectList("tranport.myTransport",n,rowBounds);
 	}
-	public String price(SqlSessionTemplate sql, Transport n) {
-		return  sql.selectOne("tranport.price", n);
+	public String successPrice(SqlSessionTemplate sql, Transport n) {
+		return  sql.selectOne("tranport.successPrice", n);
 	}
 	public int getmyTransportCount(SqlSessionTemplate sql,Transport n) {
 		return sql.selectOne("tranport.getmyTransportCount",n);
+	}
+	public List<Transport> getPrice(SqlSessionTemplate sql) {
+		return sql.selectList("tranport.getPrice");
 	}
 }

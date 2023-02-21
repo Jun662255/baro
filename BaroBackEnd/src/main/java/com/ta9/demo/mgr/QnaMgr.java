@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.ta9.demo.common.PageInfo;
 import com.ta9.demo.dao.QnaDao;
-import com.ta9.demo.dto.Notice;
 import com.ta9.demo.dto.Qna;
 
 @Service
@@ -34,6 +33,15 @@ public class QnaMgr {
 	}
 	public int qnaDelete(int qno) {
 		return qnaDao.qnaDelete(sql,qno);
+	}
+	public int updateQna(Qna q) {
+		return qnaDao.updateQna(sql,q);
+	}
+	public List<Qna> myQnaList(Qna q, PageInfo pi) {
+		return qnaDao.myQnaList(sql, q, pi);
+	}
+	public int myQnaListCount(Qna q) {
+		return qnaDao.myQnaListCount(sql, q);
 	}
 
 }

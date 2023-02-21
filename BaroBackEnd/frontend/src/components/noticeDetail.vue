@@ -9,10 +9,10 @@
             <hr>
             <br>
             <div class="boardDetilContent">
-                {{$store.state.noticeDetail[0].NOTICE_CONTENT}}
+                <p>{{$store.state.noticeDetail[0].NOTICE_CONTENT}}</p>
             </div>
             <div class="asd">
-            <button class="btnBackDiv" @click="noticeList()"> 공지목록</button>
+            <button class="btnBackDiv btn btn-dark" @click="noticeList()"> 공지목록</button>
             </div>
         </div>
     </div>
@@ -50,6 +50,8 @@ export default {
     .boardDetilContent{
         min-height: 400px;
         padding: 5px;
+        word-wrap: break-word;
+        white-space: pre-line;
     }
     .boardInfo{
         width: 200px;

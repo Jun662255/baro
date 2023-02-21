@@ -65,21 +65,6 @@ export default {
   components: {
   },
   methods: {
-    // 회원가입 조건확인
-    // a3 () {
-    //   console.log('아이디')
-    //   console.log(this.idC)
-    //   console.log('중복쳌')
-    //   console.log(this.duplicateC)
-    //   console.log('비번')
-    //   console.log(this.pwdC)
-    //   console.log('비번첵')
-    //   console.log(this.pwdCC)
-    //   console.log('이름')
-    //   console.log(this.nameC)
-    //   console.log('번호')
-    //   console.log(this.phoneC)
-    // },
     singUpBtn () {
       var singUpBtn = document.getElementById('singUpBtn')
       if (this.idC === 'Y' && this.duplicateC === 'Y' && this.pwdC === 'Y' &&
@@ -119,7 +104,6 @@ export default {
           user_id: this.id
         }
       }).then(data => {
-        console.log(data.data)
         if (data.data === 0) {
           alert('사용가능한 아이디 입니다')
           this.duplicateC = 'Y'
@@ -136,7 +120,6 @@ export default {
       })
     },
     idCheck () {
-      console.log('asd')
       var idInput1 = document.getElementById('idInput').value
       var regExpId = /^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]{4,10}$/
       var idP1 = document.getElementById('idP')
@@ -146,16 +129,11 @@ export default {
       if (!regExpId.test(idInput1)) {
         idP1.innerHTML = '  <p class="p" id="idP" style="color:red">아이디</p>'
         this.idC = 'N'
-        console.log(this.idC)
         idCheckBtn.disabled = true
-        // this.singUpBtn()
       } else {
         idP1.innerHTML = '  <p class="p" id="idP">아이디</p>'
         this.idC = 'Y'
-        console.log(this.idC)
         idCheckBtn.disabled = false
-
-        // this.singUpBtn()
       }
     },
     pwdCheck1 () {
@@ -165,13 +143,11 @@ export default {
       if (!regExpPwd.test(pwdInput1)) {
         pwdP11.innerHTML = '  <p class="p" id="idP" style="color:red">비밀번호</p>'
         this.pwdC = 'N'
-        console.log(this.pwdC)
         this.singUpBtn()
         this.pwdCheck2()
       } else {
         pwdP11.innerHTML = '  <p class="p" id="idP">비밀번호</p>'
         this.pwdC = 'Y'
-        console.log(this.pwdC)
         this.singUpBtn()
         this.pwdCheck2()
       }
@@ -183,12 +159,10 @@ export default {
       if (pwdInput1 !== pwdInput2) {
         pwdP12.innerHTML = '  <p class="p" id="idP" style="color:red">비밀번호 확인</p>'
         this.pwdCC = 'N'
-        console.log(this.pwdCC)
         this.singUpBtn()
       } else {
         pwdP12.innerHTML = '  <p class="p" id="idP">비밀번호 확인</p>'
         this.pwdCC = 'Y'
-        console.log(this.pwdCC)
         this.singUpBtn()
       }
     },
@@ -199,12 +173,10 @@ export default {
       if (!regExpName.test(nameInput1)) {
         nameP1.innerHTML = '  <p class="p" id="idP" style="color:red">이름</p>'
         this.nameC = 'N'
-        console.log(this.nameC)
         this.singUpBtn()
       } else {
         nameP1.innerHTML = '  <p class="p" id="idP">이름</p>'
         this.nameC = 'Y'
-        console.log(this.nameC)
         this.singUpBtn()
       }
     },
@@ -215,12 +187,10 @@ export default {
       if (!regExpPhone.test(phoneInput1)) {
         phoneP1.innerHTML = '  <p class="p" id="idP" style="color:red">전화번호</p>'
         this.phoneC = 'N'
-        console.log(this.phoneC)
         this.singUpBtn()
       } else {
         phoneP1.innerHTML = '  <p class="p" id="idP">전화번호</p>'
         this.phoneC = 'Y'
-        console.log(this.phoneC)
         this.singUpBtn()
       }
     }

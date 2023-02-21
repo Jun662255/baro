@@ -7,29 +7,27 @@
               <router-link to="/main" >BARO</router-link>
             </div>
             <div class="navMenu">
-              <div class="loginDiv"  v-if="this.$store.state.loginCheck == null">
-                <router-link to="/login" class=""> Login </router-link> &nbsp;
+              <div class="loginDiv"  v-if="this.$store.state.loginCheck === 'N'">
+                <router-link to="/login"> Login </router-link> &nbsp;
               </div>
               <div class="mynOut" v-else>
                 <div class="headerMy">
                   <router-link to="/mypage">
-                    <img src="../assets/myP.png" alt="" id="myPImg">
+                    <img src="../assets/myP.png" id="myPImg">
                   </router-link> &nbsp;
                 </div>
                 <div class="logout" @click="logout()">
-                  <img src="../assets/logout.png" alt="" id="logoutImg">
+                  <img src="../assets/logout.png" id="logoutImg">
                 </div>
               </div>
             </div>
         </div>
     </nav>
-    <!-- <div v-if="this.$store.state.loginCheck != null">로그인됫얼</div>
-    <div v-else> 로그인안됫얼</div> -->
   </div>
 </template>
 
 <script>
-// import router from '../router'
+import router from '../router'
 export default {
   name: 'App',
   data () {
@@ -41,13 +39,8 @@ export default {
   },
   methods: {
     logout () {
-      console.log('asd')
-      localStorage.removeItem('user_no')
-      localStorage.removeItem('phone')
-      localStorage.removeItem('user_name')
-      localStorage.removeItem('user_id')
-      localStorage.removeItem('loginCheck')
-      location.replace('/main')
+      this.$store.commit('setLogOut', null)
+      router.push('/main')
     }
   },
   mounted () {
