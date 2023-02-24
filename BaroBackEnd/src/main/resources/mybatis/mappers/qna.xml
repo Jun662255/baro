@@ -76,16 +76,20 @@
 
     <select id="myQnaList" resultType="hashmap" parameterType="com.ta9.demo.dto.Qna">
         /*[qna.xml][myQnaList][마이페이지 문의 목록][sungjun.Cho]*/
-               SELECT @rownum:=@rownum+1 AS QNA_NO
-             , QNA_TITLE
-             , QNA_CONTENT
-             , DATE_FORMAT(QNA_DATE , '%m.%d') AS 'QNA_DATE'
-             , CHECK_COMMENT
-        FROM QNA Q 
-        JOIN `MEMBER` M USING(USER_NO)
-        , (SELECT @rownum:=0) R
-        WHERE USER_NO = #{user_no}
-        ORDER BY QNA_NO DESC;
+        SELECT @rownum:=@rownum+1 as QNA_NO_ROW
+             , x.*
+          FROM (SELECT
+                       QNA_TITLE
+                     , QNA_NO
+                     , QNA_CONTENT
+                     , DATE_FORMAT(QNA_DATE , '%m.%d') AS 'QNA_DATE'
+                     , CHECK_COMMENT
+                  FROM QNA Q 
+                  JOIN `MEMBER` M USING(USER_NO)
+                 WHERE user_no = #{user_no}  
+                 ORDER BY QNA_NO) X,
+               (SELECT @rownum:=0) r
+         ORDER BY QNA_NO_ROW DESC;
     </select>
     <select id="myQnaListCount" resultType="_int" parameterType="com.ta9.demo.dto.Qna">
         /*[qna.xml]["myQnaListCount"][마이페이지 문의 목록 페이징][sungjun.Cho]*/

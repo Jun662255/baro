@@ -9,12 +9,16 @@ import org.springframework.stereotype.Service;
 import com.ta9.demo.common.PageInfo;
 import com.ta9.demo.dao.QnaDao;
 import com.ta9.demo.dto.Qna;
-
+import org.apache.ibatis.session.Configuration;
 @Service
 public class QnaMgr {
-	
-	@Autowired  QnaDao qnaDao;
-	@Autowired SqlSessionTemplate sql;
+    @Autowired
+    QnaDao qnaDao;
+
+    @Autowired
+    SqlSessionTemplate sql;
+
+
 	public List<Qna> getQnaList(PageInfo pi, String serch) {
 		return qnaDao.getQnaList(sql,pi,serch);
 	}

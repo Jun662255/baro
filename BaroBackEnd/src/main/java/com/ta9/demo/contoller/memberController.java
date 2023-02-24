@@ -73,6 +73,10 @@ public class memberController {
 	public int infoChange(@RequestBody Member m) {
 		String pwd = m.getUser_pwd();
 		m.setUser_pwd(encrypt(pwd));
+		if(m.getNew_pwd() != null) {
+			String newPwd = m.getNew_pwd();
+			m.setNew_pwd(encrypt(newPwd));
+		}
 		int result = memberMgr.infoChange(m);
 		return result;
 	}

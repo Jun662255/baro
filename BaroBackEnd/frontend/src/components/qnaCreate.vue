@@ -66,7 +66,7 @@ export default {
           } else if (res.data === 9) {
             alert('올바른 이미지 첨부파일이 아닙니다.')
           } else {
-            alert('작성 성공!')
+            alert('작성 되었습니다.')
             router.push('/qna')
           }
         }).catch(err => {

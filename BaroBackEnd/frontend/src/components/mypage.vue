@@ -33,7 +33,7 @@
               </thead>
               <tbody v-if="this.qnaList != null" >
                   <tr v-for="qnaList in qnaList" v-bind:key="qnaList.QNA_NO" @click="qnaDetail(qnaList.QNA_NO)">
-                      <td>{{qnaList.QNA_NO}}</td>
+                      <td>{{qnaList.QNA_NO_ROW}}</td>
                       <td class="leftAlign line_limit_my2">{{qnaList.QNA_TITLE}}</td>
                       <td v-if="qnaList.CHECK_COMMENT ==='Y'" style="color:blue">답변완료</td>
                       <td v-else-if="qnaList.CHECK_COMMENT ==='N'" style="color:red">답변미완</td>

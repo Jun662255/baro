@@ -78,7 +78,7 @@ export default {
         url: 'api/qnaDelete?qno=' + qno + '&c_file_name=' + this.fileName
       }).then(data => {
         if (data.data === 1) {
-          alert('삭제성공')
+          alert('삭제 되었습니다.')
           router.push('/qna')
         } else {
           alert('일시적인 오류입니다 다시 시도해주세요')

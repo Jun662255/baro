@@ -2,6 +2,7 @@ package com.ta9.demo.mgr;
 
 import java.util.List;
 
+import org.apache.ibatis.session.Configuration;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,12 @@ public class NoticeMgr {
 	NoticeDao noticeDao;
 	@Autowired
 	SqlSessionTemplate sql;
+    Configuration config;
 
+    public NoticeMgr() {
+        config = new Configuration();
+        config.setCallSettersOnNulls(false);
+    }
 	public List<Notice> getNoticeList(PageInfo pi, String serch) {
 		return noticeDao.getNoticeList(sql, pi, serch);
 	}
