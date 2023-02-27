@@ -88,7 +88,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const loginCheck = store.state.loginCheck
-  if (loginCheck === 'N' && ['transport', 'qnaCreate', 'qnaDetail', 'success', 'mypage', 'qnaUpdate', 'noticeDetail'].includes(to.name)) {
+  if (loginCheck === 'N' && ['transport', 'qnaCreate', 'qnaDetail', 'success', 'mypage', 'qnaUpdate'].includes(to.name)) {
     alert('로그인 후 이용해주세요.')
     next('/login')
   } else if (loginCheck === 'Y' && to.name === 'login') {

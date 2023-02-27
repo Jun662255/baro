@@ -8,7 +8,8 @@
             </div>
             <div class="navMenu">
               <div class="loginDiv"  v-if="this.$store.state.loginCheck === 'N'">
-                <router-link to="/login"> Login </router-link> &nbsp;
+              <div><router-link to="/SingUp" style="font-size:15px"> 회원가입 </router-link> &nbsp;</div>
+              <div><router-link to="/login"> Login </router-link> &nbsp;</div>
               </div>
               <div class="mynOut" v-else>
                 <div class="headerMy">
@@ -63,13 +64,14 @@ export default {
 .navMenu{
   float: right;
   margin-right: 30px;
-  width: 100px;
+  width: 150px;
   font-size: 20px;
   text-align: center;
   height: 40px;
 }
 .loginDiv{
   margin-top: 7px;
+  display: flex;
 }
 .logoDiv{
   font-size: 30px;
